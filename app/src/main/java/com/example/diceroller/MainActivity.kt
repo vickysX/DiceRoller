@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.diceroller.ui.theme.DiceRollerTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,11 +37,6 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Composable
 fun DiceRollerApp() {
     DiceWithButtonAndImage(modifier = Modifier
         .fillMaxSize()
@@ -50,10 +46,21 @@ fun DiceRollerApp() {
 
 @Composable
 fun DiceWithButtonAndImage(modifier : Modifier) {
-    var result by remember {
+    var result1 by remember {
         mutableStateOf(1)
     }
-    val imageResource : Int = when (result) {
+    var result2 by remember {
+        mutableStateOf(1)
+    }
+    val imageResource1 : Int = when (result1) {
+        1 -> R.drawable.dice_1
+        2 -> R.drawable.dice_2
+        3 -> R.drawable.dice_3
+        4 -> R.drawable.dice_4
+        5 -> R.drawable.dice_5
+        else -> R.drawable.dice_6
+    }
+    val imageResource2 : Int = when (result2) {
         1 -> R.drawable.dice_1
         2 -> R.drawable.dice_2
         3 -> R.drawable.dice_3
@@ -66,13 +73,27 @@ fun DiceWithButtonAndImage(modifier : Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = imageResource),
-            contentDescription = "dice 1"
+            painter = painterResource(id = imageResource1),
+            contentDescription = "dice 1",
+            modifier = Modifier.padding(top = 0.dp, bottom = 0.dp)
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { result = (1..6).random() }) {
+        Image(
+            painter = painterResource(id = imageResource2),
+            contentDescription = "dice 2",
+            modifier = Modifier.padding(top = 0.dp, bottom = 0.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(onClick = {
+            result1 = (1..6).random()
+            result2 = (1..6).random()
+        }) {
             Text(text = stringResource(id = R.string.roll_button))
         }
+        Text(
+            text = "${result1 + result2}",
+            fontSize = 24.sp,
+            modifier = Modifier.padding(top = 4.dp)
+        )
     }
 }
 
